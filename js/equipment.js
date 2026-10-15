@@ -13,7 +13,7 @@ export const EQUIPMENT = [
     ident: 'Floor-standing DP console · MT · 26" Hatteland display',
     dims: 'W 653.5 × D 685.9 × H 1,205 mm · desk 767–797 mm',
     dimsSource: 'verified', position: 'Rear-left corner, Sinor Marine side, turned 45° to face the booth centre',
-    logo: 'MT lit acrylic panel hung over the console (≈ 700 × 340 mm)',
+    logo: 'MT logo on a lit white fascia across the console front cabinet (≈ 580 × 400 mm panel, logo 440 mm wide)',
     power: '230 V, 10 A (≈ 2.3 kW). Own 16 A socket from 60 A DB (B), directly behind',
   },
   {
@@ -21,7 +21,7 @@ export const EQUIPMENT = [
     ident: 'Floor-standing DP console · NAVIS Engineering screen and joystick panel',
     dims: 'W 653.5 × D 685.9 × H 1,205 mm (same enclosure as MT)',
     dimsSource: 'verified', position: 'Rear-right corner, Amphicos side, turned 45° to face the booth centre',
-    logo: 'NAVIS lit acrylic panel hung over the console (≈ 700 × 250 mm)',
+    logo: 'NAVIS logo on a lit white fascia across the console front cabinet (≈ 580 × 400 mm panel, logo 500 mm wide)',
     power: '230 V, 10 A (≈ 2.3 kW). Own 16 A socket from 60 A DB (B) under the platform; point A is build-up only',
   },
   {
@@ -101,22 +101,8 @@ function dpConsole(kind, tex, M) {
     const dial = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.04, 0.025, 32), new THREE.MeshStandardMaterial({ color: 0x1f4fd0, roughness: 0.3, metalness: 0.3 }));
     dial.position.set(-0.155, 0.812, 0.16); g.add(dial);
   }
-  // front cabinet handles
-  for (const s of [-1, 1]) g.add(box(0.06, 0.07, 0.015, trim, s * 0.2, 0.6, 0.228));
   shadowAll(g);
   return g;
-}
-
-// ---------------- Suspended OEM logo panel (double-sided lit acrylic) ----------------
-function hangingLogo(t, asp, M, width = 0.66) {
-  const g = new THREE.Group();
-  const h = width / asp + 0.12;
-  g.add(box(width + 0.08, h, 0.025, M.whiteGloss, 0, 0, 0));
-  g.add(box(width + 0.09, 0.012, 0.03, M.ledBlue, 0, -h / 2, 0));
-  for (const s of [1, -1]) {
-    const l = logoPlane(t, width, asp, M); l.position.z = s * 0.014; if (s < 0) l.rotation.y = Math.PI; g.add(l);
-  }
-  return { group: g, h };
 }
 
 // ---------------- Display table 1000 x 500 x 950 (white plinth, blue LED edge) ----------------
@@ -198,30 +184,23 @@ export function buildEquipment(tex, M, roof) {
 
   // 1 + 2: consoles in the rear corners, rotated 45° toward the booth centre
   const consoles = [
-    { id: 'mt', c: P(75, 425), rot: 45 * DEG, logo: tex.logoMt, asp: LOGO_ASPECT.mt, lw: 0.6 },
-    { id: 'navis', c: P(525, 425), rot: -45 * DEG, logo: tex.logoNavis, asp: LOGO_ASPECT.navis, lw: 0.7 },
+    { id: 'mt', c: P(75, 425), rot: 45 * DEG, logo: tex.logoMt, asp: LOGO_ASPECT.mt, lw: 0.44 },
+    { id: 'navis', c: P(525, 425), rot: -45 * DEG, logo: tex.logoNavis, asp: LOGO_ASPECT.navis, lw: 0.50 },
   ];
   for (const k of consoles) {
     const g = new THREE.Group(); g.name = `Equipment_${k.id}`;
     const con = dpConsole(k.id, tex, M); g.add(con);
     g.position.set(k.c.x, FLOOR_Y, k.c.z); g.rotation.y = k.rot;
     root.add(g);
-    // hanging logo: arm from the back wall top, two cables, panel underside ≈ 2.40 m above platform
-    const hl = hangingLogo(k.logo, k.asp, M, k.lw);
-    const hy = FLOOR_Y + 2.4 + hl.h / 2;
-    hl.group.position.set(k.c.x, hy, k.c.z); hl.group.rotation.y = k.rot; hl.group.name = `Logo_${k.id}_Hanging`;
-    roof.add(hl.group);
-    const arm = box(0.04, 0.04, Math.abs(-2.45 - k.c.z) + 0.05, M.white, k.c.x, HEADER_Y - 0.06, (k.c.z - 2.45) / 2);
-    roof.add(arm);
-    const cableMat = new THREE.MeshBasicMaterial({ color: 0x9aa3ab });
-    const cableLen = HEADER_Y - 0.08 - (hy + hl.h / 2);
-    for (const s of [-1, 1]) {
-      const off = new THREE.Vector3(s * (k.lw / 2), 0, 0).applyAxisAngle(new THREE.Vector3(0, 1, 0), k.rot);
-      const cab = new THREE.Mesh(new THREE.CylinderGeometry(0.002, 0.002, cableLen, 4), cableMat);
-      cab.position.set(k.c.x + off.x, hy + hl.h / 2 + cableLen / 2, k.c.z + off.z); roof.add(cab);
-    }
-    // cross bar so the cables have an anchor across the arm
-    const cb = box(k.lw + 0.04, 0.03, 0.03, M.white, k.c.x, HEADER_Y - 0.09, k.c.z); cb.rotation.y = k.rot; roof.add(cb);
+    // OEM logo on a lit white fascia across the console's front cabinet (below desk height),
+    // so nothing rises above the console into the video wall sightline
+    const fx = new THREE.Group(); fx.name = `Logo_${k.id}_Fascia`;
+    const fw = 0.58, fh = 0.40, fz = 0.226; // just proud of the bevelled cabinet face
+    fx.add(box(fw, fh, 0.012, M.whiteGloss, 0, 0, 0.006));
+    fx.add(box(fw, 0.01, 0.014, M.ledBlue, 0, -fh / 2 - 0.006, 0.007));
+    const lg = logoPlane(k.logo, k.lw, k.asp, M); lg.position.z = 0.0125; fx.add(lg);
+    fx.position.set(0, 0.40, fz);
+    con.add(fx);
     items[k.id] = { group: g, focusHeight: 0.95, facing: k.rot, dist: 1.9 };
     colliders.push({ type: 'obb', cx: k.c.x, cz: k.c.z, hx: 0.36, hz: 0.37, rot: k.rot });
   }

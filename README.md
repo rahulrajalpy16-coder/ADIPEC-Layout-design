@@ -71,8 +71,8 @@ docs/prep_textures.py how the textures were extracted from the PDFs
 |---|---|---|
 | `stand-15288-complete.glb` | Booth + all equipment | 6.02 × 4.00 × 5.01 m |
 | `stand-15288-booth.glb` | Booth structure, graphics, furniture | 6.02 × 4.00 × 5.01 m |
-| `equipment-mt.glb` | MT DP console with hanging logo | |
-| `equipment-navis.glb` | NAVIS DP console with hanging logo | |
+| `equipment-mt.glb` | MT DP console with logo fascia | |
+| `equipment-navis.glb` | NAVIS DP console with logo fascia | |
 | `equipment-fugro.glb` | Display table + Fugro receiver and display | |
 | `equipment-sonardyne.glb` | Display table + SPRINT-Nav in cradle | |
 | `equipment-smt.glb` | SMT logo panel (back wall) | |
@@ -89,8 +89,8 @@ Approved decisions D1–D7 (see `docs/approved-layout.html`):
 - **MT DP console** at the rear-left corner (Sinor Marine side) and **NAVIS DP
   console** at the rear-right, both turned 45° to face the booth centre. They
   use the 653.5 × 685.9 × 1,205 mm enclosure from the requirements document.
-- **MT and NAVIS logos** are lit panels hung from the rear header frame over
-  each console (underside 2.4 m).
+- **MT and NAVIS logos** were first hung from the rear header over each console.
+  In revision 5 they moved onto lit fascias on the console fronts (below).
 - **Fugro** display table on the left edge and **Sonardyne** display table on
   the right edge, each 1000 × 500 × 950 mm, white with a blue LED edge.
   Sonardyne sits in an acrylic cradle.
@@ -158,6 +158,17 @@ Review renders are in `docs/views/rev3/`.
   - Bottom row: Guidance Marine and Xplisi Technologies.
 - The SMT UK logo was supplied at only 281 px wide, so it was upscaled and may look
   soft up close. A vector or larger file would sharpen it.
+
+## Revision 5 (15 Oct 2026)
+
+- The hanging MT and NAVIS logo panels, with their arms and cables, are removed.
+  They sat in front of the video wall.
+- Each logo is now on a lit white fascia across the console's front cabinet. The fascia
+  is about 580 × 400 mm, 200–600 mm above the platform, with a blue LED line along its
+  bottom edge. The MT logo is 440 mm wide and the NAVIS logo 500 mm wide. Nothing on
+  the consoles rises above their own 1,205 mm height, so all 8 screens are clear from
+  every viewpoint. Console size and position are unchanged.
+- The plan set is now `docs/Stand-15288-Plan-Set-R5.pdf`.
 
 ## What was tested and what was not
 
