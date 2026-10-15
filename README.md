@@ -170,6 +170,13 @@ Review renders are in `docs/views/rev3/`.
   every viewpoint. Console size and position are unchanged.
 - The plan set is now `docs/Stand-15288-Plan-Set-R5.pdf`.
 
+## Downloads
+
+- Whole project: the download button in the app's top bar, or
+  <https://github.com/rahulrajalpy16-coder/ADIPEC-Layout-design/archive/refs/heads/main.zip>
+- Layout proposal (R5): `docs/Stand-15288-Layout-Proposal-R5.pdf`
+- 2D/3D plan set (R5): `docs/Stand-15288-Plan-Set-R5.pdf`
+
 ## What was tested and what was not
 
 **Tested (headless Chromium with SwiftShader software WebGL, scripted with Playwright):**
