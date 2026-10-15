@@ -1,0 +1,440 @@
+<title>Stand 15288 Layout Proposal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: drawing-sheet page. Title block, plan sheet, elevations, then schedules and decisions as ruled tables. */
+:root{
+  --paper:#f6f8fa; --sheet:#ffffff; --ink:#13263a; --muted:#5a6b7c; --rule:#d5dde5;
+  --cyan:#1d9ad6; --cyan-soft:#d6eefa; --navy:#1b3f73; --new:#e2551b; --new-soft:#fde7dc;
+  --warn:#b7791f; --warn-soft:#fdf1d8; --dark:#22272e; --zone:#e2551b;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Barlow","Segoe UI",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0f1720; --sheet:#151f2a; --ink:#e3ebf2; --muted:#94a6b8; --rule:#2a3846;
+  --cyan:#45b6ec; --cyan-soft:#16374b; --navy:#8fb6ea; --new:#ff8a50; --new-soft:#3d2316;
+  --warn:#e6b25a; --warn-soft:#3a2d14; --dark:#05080b; --zone:#ff8a50; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0f1720; --sheet:#151f2a; --ink:#e3ebf2; --muted:#94a6b8; --rule:#2a3846;
+  --cyan:#45b6ec; --cyan-soft:#16374b; --navy:#8fb6ea; --new:#ff8a50; --new-soft:#3d2316;
+  --warn:#e6b25a; --warn-soft:#3a2d14; --dark:#05080b; --zone:#ff8a50; color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55}
+.wrap{max-width:1120px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:.01em}
+h1{font-size:clamp(28px,4.5vw,42px);line-height:1.05;font-weight:700}
+h2{font-size:24px;font-weight:600;display:flex;gap:10px;align-items:baseline}
+h2 .tag{font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400}
+h3{font-size:18px;font-weight:600}
+p{margin:0;max-width:72ch}
+.titleblock{display:grid;grid-template-columns:1fr auto;gap:16px 32px;border:1.5px solid var(--ink);background:var(--sheet);padding:18px 20px}
+.titleblock .meta{display:grid;grid-template-columns:auto auto;gap:2px 14px;font-family:var(--mono);font-size:12px;align-content:start}
+.titleblock .meta span:nth-child(odd){color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.lede{grid-column:1/-1;color:var(--muted)}
+.status{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--warn-soft);color:var(--warn);padding:3px 8px;border:1px solid var(--warn);margin-bottom:8px}
+@media (max-width:700px){.titleblock{grid-template-columns:1fr}}
+section{display:grid;gap:14px;min-width:0}
+.sheet{background:var(--sheet);border:1px solid var(--rule);padding:14px;overflow-x:auto}
+.sheet svg{display:block;width:100%;height:auto;min-width:620px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin-right:6px;border:1px solid var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+.tbl{overflow-x:auto;background:var(--sheet);border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:720px}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--rule)}
+th{font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);background:var(--paper)}
+td.num{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.n{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--new);color:var(--sheet);font-family:var(--mono);font-size:12px;font-weight:500}
+.c{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 4px;background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn);font-family:var(--mono);font-size:12px}
+.asm{font-family:var(--mono);font-size:11px;color:var(--warn);border:1px dashed var(--warn);padding:0 4px;white-space:nowrap}
+ul.facts{margin:0;padding-left:18px;display:grid;gap:6px;max-width:80ch}
+.decisions{display:grid;gap:12px}
+.dec{background:var(--sheet);border:1px solid var(--rule);padding:14px 16px;display:grid;gap:6px}
+.dec .q{font-weight:600}
+.dec .rec{font-size:14px}
+.dec .rec b{color:var(--new)}
+.dec .alt{font-size:14px;color:var(--muted)}
+.small{font-size:13px;color:var(--muted)}
+/* svg classes */
+.s-line{stroke:var(--ink);fill:none;stroke-width:1.5}
+.s-thin{stroke:var(--ink);fill:none;stroke-width:.8}
+.s-dash{stroke:var(--muted);fill:none;stroke-width:1;stroke-dasharray:6 4}
+.s-ghost{stroke:var(--muted);fill:none;stroke-width:1;stroke-dasharray:3 3}
+.s-sheet{fill:var(--sheet)}
+.s-cyan{fill:var(--cyan)}
+.s-cyanS{fill:var(--cyan-soft)}
+.s-cyanStroke{stroke:var(--cyan);fill:none}
+.s-dark{fill:var(--dark)}
+.s-wall{fill:var(--ink)}
+.s-new{fill:var(--new)}
+.s-newS{fill:var(--new-soft);stroke:var(--new);stroke-width:1.5}
+.s-zone{fill:none;stroke:var(--zone);stroke-width:1.2;stroke-dasharray:5 4}
+.s-neigh{fill:var(--warn-soft);stroke:var(--warn);stroke-width:.8}
+.s-furn{fill:var(--sheet);stroke:var(--muted);stroke-width:1}
+.t{font-family:var(--body);font-size:11px;fill:var(--ink)}
+.tm{font-family:var(--mono);font-size:9.5px;fill:var(--muted)}
+.tb{font-family:var(--display);font-size:13px;font-weight:600;fill:var(--ink)}
+.tn{font-family:var(--mono);font-size:11px;font-weight:500;fill:var(--sheet)}
+.tnew{font-family:var(--display);font-size:12px;font-weight:600;fill:var(--new)}
+.twarn{font-family:var(--mono);font-size:10px;fill:var(--warn)}
+.tw{font-family:var(--display);font-size:11px;font-weight:600;fill:#ffffff}
+</style>
+
+<div class="wrap">
+
+<header class="titleblock">
+  <div>
+    <div class="status">Approved 15 Oct 2026 · recommended picks D1–D7</div>
+    <h1>Stand 15288 · Sinor Marine / Amphicos<br>Equipment layout proposal</h1>
+  </div>
+  <div class="meta">
+    <span>Event</span><span>ADIPEC 2026, ADNEC</span>
+    <span>Stand</span><span>15288 · 6 × 5 m · 30 m²</span>
+    <span>Type</span><span>Peninsula, 3 sides open</span>
+    <span>Rear</span><span>Shared wall, Stand 15285</span>
+    <span>Units</span><span>cm unless noted</span>
+    <span>Date</span><span>15 Oct 2026</span>
+  </div>
+  <p class="lede">Four equipment items and five logos added to the approved Amphicos booth without changing its structure, size, screens, counter or branding. Approved on 15 Oct 2026 with the recommended option for every decision at the bottom. The interactive 3D model follows this layout.</p>
+</header>
+
+<section>
+  <h2>Proposed top view <span class="tag">plan · 1 grid = 50 cm · front aisle at bottom</span></h2>
+  <div class="sheet">
+  <svg viewBox="-70 -95 760 690" role="img" aria-label="Top view of stand 15288 with proposed equipment positions">
+    <!-- grid -->
+    <g class="s-ghost" opacity=".35">
+      <path d="M50 0V500M100 0V500M150 0V500M200 0V500M250 0V500M300 0V500M350 0V500M400 0V500M450 0V500M500 0V500M550 0V500"/>
+      <path d="M0 50H600M0 100H600M0 150H600M0 200H600M0 250H600M0 300H600M0 350H600M0 400H600M0 450H600"/>
+    </g>
+    <!-- neighbour -->
+    <rect x="0" y="-48" width="600" height="44" class="s-neigh"/>
+    <text x="300" y="-22" text-anchor="middle" class="twarn">STAND 15285 · shared rear wall (closed side)</text>
+    <!-- floor ring sticker -->
+    <circle cx="300" cy="258" r="207.5" fill="none" stroke="var(--cyan-soft)" stroke-width="49"/>
+    <!-- rear header outline + canopy -->
+    <rect x="2" y="2" width="596" height="258" rx="40" class="s-dash"/>
+    <path d="M67.5 260 A232.5 232.5 0 0 0 532.5 260" class="s-dash"/>
+    <path d="M90 260 A210 210 0 0 0 510 260" class="s-dash" opacity=".6"/>
+    <!-- back wall, screens, shelves -->
+    <rect x="0" y="0" width="600" height="6" class="s-wall"/>
+    <rect x="40" y="6" width="251" height="5" class="s-dark"/>
+    <rect x="309" y="6" width="251" height="5" class="s-dark"/>
+    <rect x="101" y="11" width="130" height="30" class="s-cyanS" stroke="var(--cyan)"/>
+    <rect x="369" y="11" width="130" height="30" class="s-cyanS" stroke="var(--cyan)"/>
+    <text x="165" y="30" text-anchor="middle" class="tm">shelf 130×35</text>
+    <text x="434" y="30" text-anchor="middle" class="tm">shelf 130×35</text>
+    <text x="300" y="98" text-anchor="middle" class="tm">back wall 600 × H330 · 2 screens 250×200</text>
+    <!-- lightbox columns -->
+    <rect x="0" y="138" width="10" height="75" class="s-dark"/>
+    <rect x="590" y="138" width="10" height="75" class="s-dark"/>
+    <text x="16" y="178" class="tm">lightbox 75×150</text>
+    <text x="584" y="178" text-anchor="end" class="tm">lightbox 75×150</text>
+    <!-- angled frames -->
+    <line x1="4" y1="496" x2="128" y2="374" stroke="var(--cyan)" stroke-width="14"/>
+    <line x1="596" y1="496" x2="472" y2="374" stroke="var(--cyan)" stroke-width="14"/>
+    <rect x="72" y="440" width="26" height="22" class="s-cyan" transform="rotate(-45 85 451)"/>
+    <rect x="502" y="440" width="26" height="22" class="s-cyan" transform="rotate(45 515 451)"/>
+    <text x="70" y="395" class="tm" transform="rotate(-45 70 395)">frame 165 · SMS · 55" TV</text>
+    <text x="500" y="480" class="tm" transform="rotate(45 500 480)">frame 165 · Amphicos · 55" TV</text>
+    <!-- counter -->
+    <path d="M215 440 Q300 462 385 440 L380 490 Q300 512 220 490 Z" class="s-cyan" opacity=".9"/>
+    <text x="300" y="480" text-anchor="middle" class="tw">COUNTER 170×50 · H95</text>
+    <!-- seating: original ghost + proposed -->
+    <g class="s-ghost"><circle cx="190" cy="250" r="35"/><circle cx="410" cy="250" r="35"/></g>
+    <g class="s-furn">
+      <circle cx="190" cy="275" r="35"/><circle cx="410" cy="275" r="35"/>
+      <circle cx="190" cy="215" r="20"/><circle cx="138" cy="305" r="20"/><circle cx="242" cy="305" r="20"/>
+      <circle cx="410" cy="215" r="20"/><circle cx="358" cy="305" r="20"/><circle cx="462" cy="305" r="20"/>
+    </g>
+    <text x="190" y="279" text-anchor="middle" class="tm">table</text>
+    <text x="410" y="279" text-anchor="middle" class="tm">table</text>
+    <text x="300" y="232" text-anchor="middle" class="tm">seating shifted ~25 cm forward</text>
+    <text x="300" y="244" text-anchor="middle" class="tm">(dotted = current)</text>
+
+    <!-- power points -->
+    <circle cx="100" cy="50" r="9" fill="var(--navy)"/><text x="100" y="54" text-anchor="middle" class="tn">B</text>
+    <circle cx="500" cy="50" r="9" fill="var(--warn)"/><text x="500" y="54" text-anchor="middle" class="tn">A</text>
+    <text x="114" y="57" class="tm">B · 60 A 3-ph DB</text>
+    <text x="486" y="57" text-anchor="end" class="tm">A · 15 A build-up</text>
+
+    <!-- 1 MT console -->
+    <g transform="translate(75 75) rotate(-45)">
+      <rect x="-32.7" y="-34.3" width="65.4" height="68.6" class="s-newS"/>
+      <rect x="-32.7" y="24" width="65.4" height="10.3" class="s-new"/>
+      <rect x="-32.7" y="38" width="65.4" height="90" class="s-zone"/>
+      <text x="0" y="90" text-anchor="middle" class="tm">operator 90</text>
+    </g>
+    <!-- 2 NAVIS console -->
+    <g transform="translate(525 75) rotate(45)">
+      <rect x="-32.7" y="-34.3" width="65.4" height="68.6" class="s-newS"/>
+      <rect x="-32.7" y="24" width="65.4" height="10.3" class="s-new"/>
+      <rect x="-32.7" y="38" width="65.4" height="90" class="s-zone"/>
+      <text x="0" y="90" text-anchor="middle" class="tm">operator 90</text>
+    </g>
+    <!-- 3 Fugro table -->
+    <rect x="12" y="220" width="50" height="100" class="s-newS"/>
+    <rect x="22" y="236" width="28" height="26" class="s-new" opacity=".75"/>
+    <rect x="22" y="274" width="12" height="32" class="s-new" opacity=".75"/>
+    <rect x="66" y="220" width="55" height="100" class="s-zone"/>
+    <text x="93" y="272" text-anchor="middle" class="tm" transform="rotate(-90 93 272)">staff side</text>
+    <!-- 4 Sonardyne table -->
+    <rect x="538" y="220" width="50" height="100" class="s-newS"/>
+    <circle cx="563" cy="270" r="12" class="s-new" opacity=".75"/>
+    <circle cx="563" cy="270" r="18" fill="none" stroke="var(--new)" stroke-width="1.2"/>
+    <rect x="479" y="220" width="55" height="100" class="s-zone"/>
+    <text x="507" y="272" text-anchor="middle" class="tm" transform="rotate(-90 507 272)">staff side</text>
+
+    <!-- logo markers (diamonds) -->
+    <g fill="var(--sheet)" stroke="var(--new)" stroke-width="1.5">
+      <rect x="66" y="66" width="18" height="18" transform="rotate(45 75 75)"/>
+      <rect x="516" y="66" width="18" height="18" transform="rotate(45 525 75)"/>
+      <rect x="21" y="236" width="18" height="18" transform="rotate(45 30 245)"/>
+      <rect x="561" y="236" width="18" height="18" transform="rotate(45 570 245)"/>
+      <rect x="291" y="491" width="18" height="18" transform="rotate(45 300 500)"/>
+    </g>
+    <g class="tnew" text-anchor="middle" style="font-size:10px">
+      <text x="75" y="79">L1</text><text x="525" y="79">L2</text><text x="30" y="249">L3</text><text x="570" y="249">L4</text><text x="300" y="504">L5</text>
+    </g>
+
+    <!-- numbered callouts -->
+    <g>
+      <line x1="122" y1="122" x2="160" y2="130" stroke="var(--new)"/>
+      <circle cx="172" cy="132" r="12" class="s-new"/><text x="172" y="136" text-anchor="middle" class="tn">1</text>
+      <text x="188" y="128" class="tnew">MT DP console</text><text x="188" y="141" class="tm">65.4×68.6 · H120.5</text>
+
+      <line x1="478" y1="122" x2="440" y2="130" stroke="var(--new)"/>
+      <circle cx="428" cy="132" r="12" class="s-new"/><text x="428" y="136" text-anchor="middle" class="tn">2</text>
+      <text x="412" y="128" text-anchor="end" class="tnew">NAVIS DP console</text><text x="412" y="141" text-anchor="end" class="tm">65.4×68.6 · H120.5</text>
+
+      <line x1="37" y1="320" x2="37" y2="352" stroke="var(--new)"/>
+      <circle cx="37" cy="364" r="12" class="s-new"/><text x="37" y="368" text-anchor="middle" class="tn">3</text>
+      <text x="54" y="360" class="tnew">Fugro DGPS + display</text><text x="54" y="373" class="tm">table 100×50 · H95</text>
+
+      <line x1="563" y1="320" x2="563" y2="352" stroke="var(--new)"/>
+      <circle cx="563" cy="364" r="12" class="s-new"/><text x="563" y="368" text-anchor="middle" class="tn">4</text>
+      <text x="546" y="360" text-anchor="end" class="tnew">Sonardyne SPRINT-Nav</text><text x="546" y="373" text-anchor="end" class="tm">table 100×50 · H95 · holder</text>
+
+      <circle cx="300" cy="530" r="12" class="s-new"/><text x="300" y="534" text-anchor="middle" class="tn">5</text>
+      <text x="318" y="534" class="tnew">SMT logo on counter front (L5)</text>
+    </g>
+
+    <!-- conflict tags -->
+    <g>
+      <rect x="214" y="46" width="26" height="16" fill="var(--warn-soft)" stroke="var(--warn)"/><text x="227" y="58" text-anchor="middle" class="twarn">C2</text>
+      <rect x="360" y="46" width="26" height="16" fill="var(--warn-soft)" stroke="var(--warn)"/><text x="373" y="58" text-anchor="middle" class="twarn">C3</text>
+      <rect x="140" y="160" width="26" height="16" fill="var(--warn-soft)" stroke="var(--warn)"/><text x="153" y="172" text-anchor="middle" class="twarn">C4</text>
+      <rect x="434" y="160" width="26" height="16" fill="var(--warn-soft)" stroke="var(--warn)"/><text x="447" y="172" text-anchor="middle" class="twarn">C4</text>
+    </g>
+
+    <!-- boundary + dims -->
+    <rect x="0" y="0" width="600" height="500" class="s-line"/>
+    <g class="s-thin"><path d="M0 560H600M0 554V566M600 554V566"/><path d="M640 0V500M634 0H646M634 500H646"/></g>
+    <text x="300" y="575" text-anchor="middle" class="tm">600</text>
+    <text x="654" y="254" class="tm">500</text>
+    <text x="300" y="552" text-anchor="middle" class="tb" style="font-size:11px;fill:var(--muted)">FRONT AISLE (OPEN)</text>
+    <text x="-30" y="250" text-anchor="middle" class="tb" style="font-size:11px;fill:var(--muted)" transform="rotate(-90 -30 250)">LEFT AISLE · SINOR MARINE SIDE</text>
+    <text x="625" y="250" text-anchor="middle" class="tb" style="font-size:11px;fill:var(--muted)" transform="rotate(90 625 250)">RIGHT AISLE · AMPHICOS SIDE</text>
+  </svg>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--new-soft);border-color:var(--new)"></i>New equipment</span>
+    <span><i style="border:1.5px dashed var(--zone);background:transparent"></i>Operator / staff clearance</span>
+    <span><i style="background:var(--sheet);border-color:var(--new);transform:rotate(45deg) scale(.8)"></i>New logo (L1–L5)</span>
+    <span><i style="background:var(--cyan)"></i>Existing frames, counter</span>
+    <span><i style="background:var(--cyan-soft);border-color:var(--cyan-soft)"></i>Floor ring sticker</span>
+    <span><i style="border:1px dashed var(--muted);background:transparent"></i>Header / canopy above</span>
+    <span><i style="background:var(--warn-soft);border-color:var(--warn)"></i>Conflict (see list)</span>
+  </div>
+  <p class="small">Existing elements are drawn from the Amphicos booth drawings (scale 1:10). Seating positions and the lightbox column position are scaled from the renders and side views, so they are approximate.</p>
+</section>
+
+<section>
+  <h2>Annotated elevations <span class="tag">concept · heights above 10 cm platform</span></h2>
+  <div class="two">
+    <div class="sheet">
+      <h3>Front elevation (from front aisle)</h3>
+      <svg viewBox="-20 0 640 450" role="img" aria-label="Front elevation with new logos and counter branding">
+        <rect x="0" y="410" width="600" height="10" class="s-cyan"/>
+        <rect x="0" y="80" width="600" height="330" class="s-sheet" stroke="var(--ink)"/>
+        <rect x="40" y="90" width="251" height="200" class="s-dark"/><rect x="309" y="90" width="251" height="200" class="s-dark"/>
+        <rect x="101" y="306" width="130" height="4" class="s-cyan"/><rect x="369" y="306" width="130" height="4" class="s-cyan"/>
+        <!-- header -->
+        <rect x="0" y="20" width="67.5" height="60" class="s-sheet" stroke="var(--ink)"/>
+        <rect x="532.5" y="20" width="67.5" height="60" class="s-sheet" stroke="var(--ink)"/>
+        <rect x="67.5" y="20" width="465" height="60" class="s-cyan"/>
+        <rect x="90" y="26" width="420" height="48" class="s-dark"/>
+        <text x="300" y="55" text-anchor="middle" class="tw">flexible screen 700×50 (unchanged)</text>
+        <rect x="6" y="38" width="56" height="22" class="s-newS"/><text x="34" y="53" text-anchor="middle" class="tnew">FUGRO</text>
+        <rect x="538" y="38" width="56" height="22" class="s-newS"/><text x="566" y="53" text-anchor="middle" class="tnew" style="font-size:10px">SONARDYNE</text>
+        <text x="34" y="14" text-anchor="middle" class="tnew">L3</text><text x="566" y="14" text-anchor="middle" class="tnew">L4</text>
+        <!-- hidden consoles behind frames -->
+        <path d="M28 410V355H122V410M28 355L40 289H110L122 355" class="s-zone"/>
+        <path d="M478 410V355H572V410M478 355L490 289H560L572 355" class="s-zone"/>
+        <rect x="40" y="160" width="70" height="40" class="s-zone"/><rect x="490" y="160" width="70" height="40" class="s-zone"/>
+        <!-- frames -->
+        <rect x="0" y="80" width="128" height="330" fill="var(--cyan)" opacity=".9"/>
+        <rect x="12" y="95" width="104" height="300" class="s-sheet"/>
+        <rect x="472" y="80" width="128" height="330" fill="var(--cyan)" opacity=".9"/>
+        <rect x="484" y="95" width="104" height="300" class="s-sheet"/>
+        <text x="64" y="128" text-anchor="middle" class="tb" style="fill:var(--navy)">SINOR MARINE</text>
+        <text x="536" y="128" text-anchor="middle" class="tb" style="fill:var(--cyan)">amphicos</text>
+        <rect x="22" y="150" width="84" height="50" class="s-dark"/><rect x="494" y="150" width="84" height="50" class="s-dark"/>
+        <text x="64" y="240" text-anchor="middle" class="tm">MT console + logo</text><text x="64" y="252" text-anchor="middle" class="tm">sit behind this frame</text>
+        <text x="536" y="240" text-anchor="middle" class="tm">NAVIS console + logo</text><text x="536" y="252" text-anchor="middle" class="tm">sit behind this frame</text>
+        <!-- counter -->
+        <path d="M220 315H380L390 410H210Z" class="s-sheet" stroke="var(--cyan)" stroke-width="3"/>
+        <text x="245" y="362" text-anchor="middle" class="tm" style="fill:var(--navy)">SMS</text>
+        <rect x="278" y="348" width="44" height="22" class="s-newS"/><text x="300" y="363" text-anchor="middle" class="tnew">SMT</text>
+        <text x="355" y="362" text-anchor="middle" class="tm" style="fill:var(--cyan)">amphicos</text>
+        <text x="300" y="340" text-anchor="middle" class="tnew">L5</text>
+        <!-- dims -->
+        <g class="s-thin"><path d="M612 20V420M607 20H617M607 80H617M607 410H617"/></g>
+        <text x="616" y="50" class="tm">60</text><text x="616" y="250" class="tm">330</text>
+      </svg>
+      <p class="small">Straight on, the angled frames hide the rear corners. The consoles are seen from the side aisles and on the diagonal from the front aisle. The Fugro and Sonardyne logos use the blank white header corners, which stay visible from the front.</p>
+    </div>
+    <div class="sheet">
+      <h3>Left elevation (from Sinor Marine side aisle)</h3>
+      <svg viewBox="-20 0 540 450" role="img" aria-label="Left elevation showing MT console, lightbox and Fugro table">
+        <rect x="0" y="410" width="500" height="10" class="s-cyan"/>
+        <rect x="0" y="80" width="6" height="330" class="s-wall"/>
+        <!-- header -->
+        <rect x="0" y="20" width="260" height="60" class="s-sheet" stroke="var(--ink)"/>
+        <text x="104" y="55" text-anchor="middle" class="tb" style="fill:var(--navy)">SINOR MARINE SERVICES</text>
+        <rect x="260" y="20" width="230" height="60" class="s-dark"/>
+        <text x="375" y="55" text-anchor="middle" class="tw">flexible screen</text>
+        <rect x="218" y="26" width="40" height="18" class="s-newS"/><text x="238" y="39" text-anchor="middle" class="tnew" style="font-size:9px">FUGRO</text>
+        <text x="238" y="14" text-anchor="middle" class="tnew">L3 (on corner)</text>
+        <!-- lightbox column -->
+        <path d="M168 80V410M175 80V410M182 80V410" class="s-thin"/>
+        <rect x="137.5" y="166" width="75" height="150" class="s-dark"/>
+        <text x="175" y="245" text-anchor="middle" class="tw">lightbox</text>
+        <!-- MT console -->
+        <path d="M30 410V342H118V330H96L86 289.5H50L60 330H30" class="s-newS"/>
+        <text x="74" y="380" text-anchor="middle" class="tnew">1 · MT</text>
+        <!-- MT logo -->
+        <rect x="40" y="120" width="70" height="40" class="s-newS"/>
+        <text x="75" y="145" text-anchor="middle" class="tnew">MT</text>
+        <text x="75" y="112" text-anchor="middle" class="tnew">L1</text>
+        <path d="M60 80V120M90 80V120" class="s-thin" stroke-dasharray="2 2"/>
+        <!-- Fugro table -->
+        <rect x="220" y="315" width="100" height="95" class="s-newS"/>
+        <rect x="232" y="300" width="34" height="15" class="s-new" opacity=".8"/>
+        <path d="M276 315L280 290H312L314 315" class="s-new" opacity=".8"/>
+        <text x="270" y="368" text-anchor="middle" class="tnew">3 · Fugro</text>
+        <!-- frame back -->
+        <rect x="376" y="80" width="124" height="330" fill="var(--cyan)" opacity=".9"/>
+        <rect x="388" y="95" width="100" height="300" class="s-sheet"/>
+        <rect x="398" y="150" width="80" height="48" class="s-dark"/>
+        <text x="438" y="240" text-anchor="middle" class="tm">frame (back face)</text>
+        <!-- dims -->
+        <g class="s-thin"><path d="M0 436H500M0 431V441M500 431V441"/></g>
+        <text x="4" y="448" class="tm">rear</text><text x="496" y="448" text-anchor="end" class="tm">front</text>
+        <text x="250" y="448" text-anchor="middle" class="tm">500</text>
+        <text x="120" y="300" class="tm">H120.5</text><text x="324" y="335" class="tm">H95</text>
+      </svg>
+      <p class="small">The right elevation mirrors this with NAVIS (2), Sonardyne (4) and the Amphicos header.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>1 · The current booth <span class="tag">what the files show</span></h2>
+  <ul class="facts">
+    <li><b>Size and type.</b> 6 m wide × 5 m deep, 30 m², peninsula. Front, left and right aisles are open; the rear adjoins Stand 15285. 10 cm raised platform with blue edge light. Overall height 400 cm.</li>
+    <li><b>Back wall.</b> 600 × 330 cm with two 250 × 200 cm screens and two 130 × 35 cm lit shelves below them.</li>
+    <li><b>Header.</b> A 600 × 260 cm rear header frame (60 cm fascia, open centre) carrying the Sinor Marine Services logo on the left side and the Amphicos logo on the right side. A semicircular canopy (Ø 465 cm, 230 cm deep) projects to the front with a 700 × 50 cm wrap-around flexible screen and a ceiling of downlights.</li>
+    <li><b>Front corners.</b> Two angled 165 × 330 cm frames with blue LED edges, double-sided: Sinor Marine on the left, Amphicos on the right, each with a 55" TV and a 50 × 35 cm laptop shelf on the aisle face.</li>
+    <li><b>Columns.</b> One triple-pole column with a 75 × 150 cm lightbox on each side, about 1.75 m from the rear.</li>
+    <li><b>Reception.</b> Curved 170 × 50 × 95 cm counter at front centre carrying the Sinor Marine and Amphicos logos, with lockable storage.</li>
+    <li><b>Seating.</b> Two round tables with three chairs each under the canopy, inside a Ø 465 cm blue floor ring. Two potted plants appear in the renders near the rear sides.</li>
+    <li><b>Design language.</b> White surfaces, Amphicos cyan, Sinor navy, blue LED edge lighting and lit acrylic logos.</li>
+    <li><b>Power.</b> B = 60 A three-phase main DB at rear left (1.0 m from the left side, 0.5 m from the rear). A = 15 A single-phase build-up power at rear right. All cabling runs under the platform.</li>
+    <li><b>Fixed vs movable.</b> Walls, header, canopy, frames, columns and screens are structural and stay. Tables, chairs, plants and the small side shelves can move.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>2 · Requirements from the Sinor Marine document</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>#</th><th>Item</th><th>Size (from document)</th><th>Placement asked</th><th>Logo above</th><th>Data gaps</th></tr></thead>
+    <tbody>
+      <tr><td><span class="n">1</span></td><td>MT DP console</td><td class="num">W 653.5 × D 685.9 × H 1,205 mm<br>desk 767–797 · cabinet 676</td><td>Floor-standing, Sinor Marine side, "marked location"</td><td>MT</td><td>Marked location not in any file. Power draw unknown.</td></tr>
+      <tr><td><span class="n">2</span></td><td>NAVIS DP console</td><td class="num">Same as item 1</td><td>Floor-standing, opposite side, "marked location"</td><td>NAVIS</td><td>Same enclosure as MT, NAVIS screen and joystick panel. Power unknown.</td></tr>
+      <tr><td><span class="n">3</span></td><td>Fugro Seastar 9410-AUT DGPS + monitoring display</td><td class="num">not given</td><td>Presentable display table, units side by side</td><td>Fugro</td><td><span class="asm">assumption</span> unit sizes needed from datasheet</td></tr>
+      <tr><td><span class="n">4</span></td><td>Sonardyne SPRINT-Nav DP</td><td class="num">not given</td><td>Presentable display table with secure holder</td><td>Sonardyne</td><td><span class="asm">assumption</span> unit size and weight needed for holder</td></tr>
+      <tr><td><span class="n">5</span></td><td>SMT (Sinor Marine Technologies) logo</td><td class="num">—</td><td>In the overall booth branding, with Sinor Marine and Amphicos</td><td>—</td><td>Placement left to us</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">The document jumps from section 05 to 07. If a section 06 existed, it was not in the file.</p>
+</section>
+
+<section>
+  <h2>3 · Placement schedule</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>#</th><th>Position</th><th>Footprint</th><th>Clearance</th><th>Existing elements affected</th><th>Why here</th></tr></thead>
+    <tbody>
+      <tr><td><span class="n">1</span></td><td>Rear-left corner, turned 45° to face the booth centre. Centre about 75 cm from left, 75 cm from rear.</td><td class="num">65.4 × 68.6<br>H 120.5</td><td>90 cm operator zone in front; cable gap behind</td><td>Left plant and small rear side shelf removed. Left seating moves ~25 cm forward.</td><td>On the Sinor Marine side under the SMS header, next to the main DB for a short feed, visible from the left aisle and diagonally from the front.</td></tr>
+      <tr><td><span class="n">2</span></td><td>Rear-right corner, mirror of item 1.</td><td class="num">65.4 × 68.6<br>H 120.5</td><td>Same as item 1</td><td>Right plant and side shelf removed. Right seating moves ~25 cm forward.</td><td>Opposite side as required, keeps the booth symmetric.</td></tr>
+      <tr><td><span class="n">3</span></td><td>Left edge, between the frame and the lightbox column, long side to the left aisle.</td><td class="num">100 × 50<br>H 95 <span class="asm">assumption</span></td><td>~55 cm staff side inside</td><td>None structural.</td><td>Faces the left aisle so visitors stand off-stand. Staff demo from inside. Pairs the DGPS with the MT console on one side.</td></tr>
+      <tr><td><span class="n">4</span></td><td>Right edge, mirror of item 3, unit in a lockable cradle on the table.</td><td class="num">100 × 50<br>H 95 <span class="asm">assumption</span></td><td>~55 cm staff side inside</td><td>None structural.</td><td>Mirror of item 3 for balance. Pairs SPRINT-Nav with NAVIS on the Amphicos side.</td></tr>
+      <tr><td><span class="n">5</span></td><td>Counter front, between the Sinor Marine and Amphicos logos.</td><td class="num">≈ 40 × 20 <span class="asm">assumption</span></td><td>—</td><td>Counter graphic re-spaced to three logos.</td><td>The counter already carries the shared branding and is the most-photographed face from the front aisle.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Logo</th><th>Proposed fixing</th><th>Size</th><th>Visible from</th></tr></thead>
+    <tbody>
+      <tr><td>L1 MT</td><td>Lit acrylic panel hung from the rear header frame, directly over the MT console, underside ≈ 240 cm</td><td class="num">≈ 70 × 40 <span class="asm">assumption</span></td><td>Left aisle, inside, front diagonal</td></tr>
+      <tr><td>L2 NAVIS</td><td>Same, over the NAVIS console</td><td class="num">≈ 70 × 25 <span class="asm">assumption</span></td><td>Right aisle, inside, front diagonal</td></tr>
+      <tr><td>L3 Fugro</td><td>Lit acrylic on the blank white left corner of the rear header, above the Fugro table</td><td class="num">≈ 56 × 20</td><td>Front aisle and left aisle</td></tr>
+      <tr><td>L4 Sonardyne</td><td>Same, right corner of the header</td><td class="num">≈ 56 × 20</td><td>Front aisle and right aisle</td></tr>
+      <tr><td>L5 SMT</td><td>Lit acrylic on the counter front, centre</td><td class="num">≈ 40 × 20</td><td>Front aisle</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>4 · Conflicts and installation concerns</h2>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th>Issue</th><th>Proposed resolution</th></tr></thead>
+    <tbody>
+      <tr><td><span class="c">C1</span></td><td>The requirements say the consoles go at "previously marked" locations, but none of the four files marks them.</td><td>Rear corners proposed. If you have the marked drawing, send it and I will match it.</td></tr>
+      <tr><td><span class="c">C2</span></td><td>DB B (60 A) sits 0.5 m from the rear, but the notes say supply points are concealed behind the back wall, which the drawings place on the rear boundary. It also lands right beside the MT console flank.</td><td>Keep B as a floor box under the platform with an access hatch beside the console, which also hides it. Or ask SM Advertise to move the point to the rear boundary.</td></tr>
+      <tr><td><span class="c">C3</span></td><td>Point A is 15 A build-up power and is normally not live during the show. NAVIS and Sonardyne are on that side.</td><td>Feed all four items from DB B under the platform (about 5 m run to the right side). Console and unit power ratings are needed from the suppliers.</td></tr>
+      <tr><td><span class="c">C4</span></td><td>The console operator zones reach the rear chairs of both seating groups. Seating is not dimensioned in the drawings.</td><td>Move both table groups ~25 cm toward the front. If that is too tight once furniture sizes are known, drop to two chairs per table.</td></tr>
+      <tr><td><span class="c">C5</span></td><td>From dead-straight in front, the angled frames hide both rear corners, so consoles and their logos are seen from the side aisles and front diagonals only.</td><td>Accepted to avoid moving structure. The alternative (consoles further in, behind the seating) blocks circulation and covers the back screens.</td></tr>
+      <tr><td><span class="c">C6</span></td><td>The small rear side shelves (≈ 104 cm high) and the two potted plants sit where the consoles go.</td><td>Remove the shelves. Plants can move beside the counter or be dropped.</td></tr>
+      <tr><td><span class="c">C7</span></td><td>No dimensions for the Fugro receiver, its display, or the SPRINT-Nav. The holder and table cannot be sized yet.</td><td>Table drawn at 100 × 50 cm as a placeholder. Need datasheets before 3D.</td></tr>
+      <tr><td><span class="c">C8</span></td><td>The electrical plan lists the exhibitor as First Marine and Engineering Services Limited, while the stand brands are Sinor Marine and Amphicos.</td><td>No layout impact. Flagging in case the organiser record needs correcting.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>5 · Decisions for you</h2>
+  <div class="decisions">
+    <div class="dec"><div class="q">D1 · Console positions</div><div class="rec"><b>Recommended:</b> rear-left (MT) and rear-right (NAVIS) corners, as drawn.</div><div class="alt">Or send the marked drawing the requirements refer to.</div></div>
+    <div class="dec"><div class="q">D2 · Console orientation</div><div class="rec"><b>Recommended:</b> turned 45° toward the booth centre, so the screens read from the side aisle and the front diagonal.</div><div class="alt">Alternative: square to the front aisle. Tidier lines, but the screens face the back of the frames.</div></div>
+    <div class="dec"><div class="q">D3 · Which side gets Fugro and Sonardyne</div><div class="rec"><b>Recommended:</b> Fugro with MT on the Sinor Marine side, Sonardyne with NAVIS on the Amphicos side.</div><div class="alt">Alternative: swap them. The document does not specify sides.</div></div>
+    <div class="dec"><div class="q">D4 · MT and NAVIS logo fixing</div><div class="rec"><b>Recommended:</b> lit acrylic panels hung from the header frame directly over each console.</div><div class="alt">Alternative: put them on the white header corners for front-aisle visibility. This moves Fugro and Sonardyne onto table-mounted risers instead.</div></div>
+    <div class="dec"><div class="q">D5 · Display tables</div><div class="rec"><b>Recommended:</b> two 100 × 50 × 95 cm white plinth tables with blue LED edge to match the counter, with a lockable cradle for SPRINT-Nav.</div><div class="alt">Sizes change once the unit datasheets arrive.</div></div>
+    <div class="dec"><div class="q">D6 · SMT logo</div><div class="rec"><b>Recommended:</b> counter front, centred between Sinor Marine and Amphicos.</div><div class="alt">Alternative: beside the SMS logo on the left side of the header.</div></div>
+    <div class="dec"><div class="q">D7 · Seating</div><div class="rec"><b>Recommended:</b> keep both tables, shift ~25 cm forward, three chairs each.</div><div class="alt">Fallback: two chairs per table.</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Assumptions to confirm</h2>
+  <ul class="facts">
+    <li>Left as seen from the front aisle is the Sinor Marine side. The renders show the SMS header and frame on that side.</li>
+    <li>Seating, plant and lightbox column positions are scaled from renders and side views, not from dimensioned drawings.</li>
+    <li>All heights are measured from the top of the 10 cm platform.</li>
+    <li>Logo sizes are proposals sized to fit the surfaces. Final artwork should come from the logo files in the requirements document.</li>
+    <li>Fugro, Sonardyne and console power ratings and unit dimensions are unknown until datasheets are supplied.</li>
+  </ul>
+</section>
+
+</div>
