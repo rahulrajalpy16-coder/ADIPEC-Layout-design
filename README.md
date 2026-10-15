@@ -196,8 +196,9 @@ Review renders are in `docs/views/rev3/`.
 - **SMT logo size**: about 900 × 360 mm on the back wall. Final size to confirm.
 - **Seating and lightbox column positions** are scaled from renders and side
   views, so they are approximate.
-- **Power ratings** for the consoles and units are unknown. The plan assumes
-  everything is fed from the 60 A DB (point B) under the platform.
+- **Power**: the MT and NAVIS consoles are 230 V, 10 A each (≈ 2.3 kW, confirmed
+  by Rahul), each on its own 16 A socket from the 60 A DB (point B) under the
+  platform. Fugro and Sonardyne ratings are still unknown.
 - **Back-right screen content**: in the source render a person stands in front
   of part of this screen, so that region was patched.
 - **Console marked locations (C1)**: the requirements mention them, but none

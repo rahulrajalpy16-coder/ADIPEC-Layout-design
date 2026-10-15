@@ -14,7 +14,7 @@ export const EQUIPMENT = [
     dims: 'W 653.5 × D 685.9 × H 1,205 mm · desk 767–797 mm',
     dimsSource: 'verified', position: 'Rear-left corner, Sinor Marine side, turned 45° to face the booth centre',
     logo: 'MT lit acrylic panel hung over the console (≈ 700 × 340 mm)',
-    power: 'Fed from 60 A DB (B), directly behind',
+    power: '230 V, 10 A (≈ 2.3 kW). Own 16 A socket from 60 A DB (B), directly behind',
   },
   {
     id: 'navis', num: 2, name: 'NAVIS DP Console', short: 'NAVIS DP',
@@ -22,7 +22,7 @@ export const EQUIPMENT = [
     dims: 'W 653.5 × D 685.9 × H 1,205 mm (same enclosure as MT)',
     dimsSource: 'verified', position: 'Rear-right corner, Amphicos side, turned 45° to face the booth centre',
     logo: 'NAVIS lit acrylic panel hung over the console (≈ 700 × 250 mm)',
-    power: 'Fed from 60 A DB (B) under the platform; point A is build-up only',
+    power: '230 V, 10 A (≈ 2.3 kW). Own 16 A socket from 60 A DB (B) under the platform; point A is build-up only',
   },
   {
     id: 'fugro', num: 3, name: 'Fugro DGPS + Display', short: 'Fugro',
