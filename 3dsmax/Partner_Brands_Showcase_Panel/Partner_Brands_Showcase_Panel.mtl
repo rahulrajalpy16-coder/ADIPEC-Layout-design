@@ -1,0 +1,35 @@
+# https://github.com/mikedh/trimesh
+
+newmtl Partner_Brands_Showcase_Panel_00
+Ka 0.40000000 0.40000000 0.40000000
+Kd 0.57647059 0.64313725 0.70196078
+Ks 0.40000000 0.40000000 0.40000000
+Ns 1.00000000
+
+newmtl Partner_Brands_Showcase_Panel_02
+Ka 0.40000000 0.40000000 0.40000000
+Kd 1.00000000 1.00000000 1.00000000
+Ks 0.40000000 0.40000000 0.40000000
+Ns 1.00000000
+map_Kd Partner_Brands_Showcase_Panel_02.png
+
+newmtl Partner_Brands_Showcase_Panel_03
+Ka 0.40000000 0.40000000 0.40000000
+Kd 1.00000000 1.00000000 1.00000000
+Ks 0.40000000 0.40000000 0.40000000
+Ns 1.00000000
+map_Kd Partner_Brands_Showcase_Panel_03.png
+
+newmtl Partner_Brands_Showcase_Panel_04
+Ka 0.40000000 0.40000000 0.40000000
+Kd 1.00000000 1.00000000 1.00000000
+Ks 0.40000000 0.40000000 0.40000000
+Ns 1.00000000
+map_Kd Partner_Brands_Showcase_Panel_04.png
+
+newmtl Partner_Brands_Showcase_Panel_05
+Ka 0.40000000 0.40000000 0.40000000
+Kd 1.00000000 1.00000000 1.00000000
+Ks 0.40000000 0.40000000 0.40000000
+Ns 1.00000000
+map_Kd Partner_Brands_Showcase_Panel_05.png

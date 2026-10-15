@@ -73,9 +73,11 @@ docs/prep_textures.py how the textures were extracted from the PDFs
 | `stand-15288-booth.glb` | Booth structure, graphics, furniture | 6.02 × 4.00 × 5.01 m |
 | `equipment-mt.glb` | MT DP console with logo fascia | |
 | `equipment-navis.glb` | NAVIS DP console with logo fascia | |
-| `equipment-fugro.glb` | Display table + Fugro receiver and display | |
-| `equipment-sonardyne.glb` | Display table + SPRINT-Nav in cradle | |
-| `equipment-smt.glb` | SMT logo panel (back wall) | |
+| `equipment-fugro.glb` | Fugro receiver and display | |
+| `equipment-sonardyne.glb` | SPRINT-Nav in cradle | |
+
+3ds Max ready OBJ files (centimetres, with materials and textures) for every added item are in
+`3dsmax/`, with import steps in `3dsmax/README.txt`.
 
 Units are metres, Y up. Origin is the stand centre at hall-floor level. The
 front aisle is +Z, the Amphicos side is +X. Each file was re-loaded with
@@ -169,6 +171,20 @@ Review renders are in `docs/views/rev3/`.
   the consoles rises above their own 1,205 mm height, so all 8 screens are clear from
   every viewpoint. Console size and position are unchanged.
 - The plan set is now `docs/Stand-15288-Plan-Set-R5.pdf`.
+
+## Revision 6 (15 Oct 2026)
+
+Changes marked by Rahul on the plan:
+
+- The SMT logo is removed from the back wall. SMT now appears only in the Partner Brands Showcase.
+- The NAVIS console moves from the rear-right corner to the place of the right seating group's rear
+  chair (centre 410 cm from the left edge, 192 cm from the rear), square to the front aisle. That chair
+  is removed and the right table with its two remaining chairs moves 35 cm further forward, leaving
+  about 50 cm in front of the console for the operator.
+- The right-hand Sonardyne table is removed. Sonardyne now shares the left table with Fugro
+  (Sonardyne rear half, Fugro front half). **Dimension change:** that table is now 1500 × 500 × 950 mm
+  (was 1000) so both units fit.
+- The rear-right corner and the right edge are now open.
 
 ## Downloads
 

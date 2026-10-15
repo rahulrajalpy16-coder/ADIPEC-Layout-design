@@ -109,9 +109,7 @@ export function buildBooth(tex, M) {
     booth.add(sh);
     booth.add(box(1.3, 0.008, 0.012, M.ledBlue, p.x, Y0 + 1.0, -STAND.d / 2 + 0.1 + 0.35));
   }
-  // SMT logo (relocated from the counter): back wall, on the booth centre line under the video wall
-  const smtLogo = logoPlane(tex.logoSmt, 0.9, LOGO_ASPECT.smt, M);
-  smtLogo.position.set(0, Y0 + 0.80, wallZ + 0.006); smtLogo.name = 'Logo_SMT_BackWall'; booth.add(smtLogo);
+  // R6: the SMT back-wall logo was removed; SMT appears in the Partner Brands Showcase only
 
   // ---------- Rear header frame 600 x 260, fascia 60 high, 12 thick, rounded front corners ----------
   {
@@ -233,10 +231,11 @@ export function buildBooth(tex, M) {
   booth.add(counter.group);
   colliders.push(...counter.colliders);
 
-  // ---------- Seating: 2 round tables + 3 chairs each (moved ~25 cm forward) ----------
+  // ---------- Seating: 2 round tables (moved ~25 cm forward). R6: the right group gives its rear chair
+  // to the NAVIS console and moves a further 35 cm forward to leave an operator space ----------
   for (const s of [-1, 1]) {
-    const c = P(s < 0 ? 190 : 410, 225);
-    const g = seatingGroup(M, s); g.position.set(c.x, FLOOR_Y, c.z); g.name = s < 0 ? 'Seating_Left' : 'Seating_Right';
+    const c = P(s < 0 ? 190 : 410, s < 0 ? 225 : 190);
+    const g = seatingGroup(M, s, s > 0); g.position.set(c.x, FLOOR_Y, c.z); g.name = s < 0 ? 'Seating_Left' : 'Seating_Right';
     booth.add(g);
     colliders.push({ type: 'circle', cx: c.x, cz: c.z, r: 0.38 });
     g.userData.chairs.forEach(ch => {
@@ -247,7 +246,7 @@ export function buildBooth(tex, M) {
 
   booth.add(roof);
   booth.traverse(o => { if (o.isMesh && o.castShadow === undefined) o.castShadow = true; });
-  return { booth, roof, colliders, counter, smtLogo };
+  return { booth, roof, colliders, counter };
 }
 
 // Partner Brands Showcase: brands not shown elsewhere on the stand plus the two SMT group logos
@@ -280,14 +279,14 @@ function laptop(screenTex, M, x, y, z) {
   return g;
 }
 
-function seatingGroup(M, side) {
+function seatingGroup(M, side, noRear = false) {
   const g = new THREE.Group();
   const top = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.02, 48), M.glass); top.position.y = 0.74; g.add(top);
   const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.72, 16), M.whiteGloss); stem.position.y = 0.37; g.add(stem);
   const foot = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.25, 0.02, 32), M.whiteGloss); foot.position.y = 0.01; g.add(foot);
   const chairs = [];
   // chairs at the rear, outer side and front so the centre aisle stays clear
-  for (const a of [Math.PI * 0.5, side < 0 ? Math.PI : 0, Math.PI * 1.5]) {
+  for (const a of [Math.PI * 0.5, side < 0 ? Math.PI : 0, Math.PI * 1.5].filter(a => !(noRear && a === Math.PI * 0.5))) {
     const ch = chair(M);
     ch.position.set(Math.cos(a) * 0.62, 0, -Math.sin(a) * 0.62);
     ch.lookAt(0, 0, 0);

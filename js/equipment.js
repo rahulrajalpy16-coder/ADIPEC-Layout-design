@@ -20,32 +20,25 @@ export const EQUIPMENT = [
     id: 'navis', num: 2, name: 'NAVIS DP Console', short: 'NAVIS DP',
     ident: 'Floor-standing DP console · NAVIS Engineering screen and joystick panel',
     dims: 'W 653.5 × D 685.9 × H 1,205 mm (same enclosure as MT)',
-    dimsSource: 'verified', position: 'Rear-right corner, Amphicos side, turned 45° to face the booth centre',
+    dimsSource: 'verified', position: 'Right of centre in place of the right seating group\'s rear chair, squared to the front aisle (R6). Right table moved 35 cm forward for an operator space',
     logo: 'NAVIS logo on a lit white fascia across the console front cabinet (≈ 580 × 400 mm panel, logo 500 mm wide)',
-    power: '230 V, 10 A (≈ 2.3 kW). Own 16 A socket from 60 A DB (B) under the platform; point A is build-up only',
+    power: '230 V, 10 A (≈ 2.3 kW). Own 16 A socket from 60 A DB (B), cable under the platform',
   },
   {
     id: 'fugro', num: 3, name: 'Fugro DGPS + Display', short: 'Fugro',
     ident: 'Fugro Seastar 9410-AUT DGPS/GNSS receiver with monitoring display',
-    dims: 'Units: receiver ≈ 300 × 280 × 100 mm, display ≈ 320 × 220 mm (assumed). Table 1000 × 500 × 950 mm',
-    dimsSource: 'assumed', position: 'Left edge between the corner frame and the lightbox, facing the left aisle',
+    dims: 'Units: receiver ≈ 300 × 280 × 100 mm, display ≈ 320 × 220 mm (assumed). Shared table 1500 × 500 × 950 mm (R6, was 1000)',
+    dimsSource: 'assumed', position: 'Left edge, front half of the shared 1.5 m table (Sonardyne on the rear half), facing the left aisle',
     logo: 'Fugro logo on the table front (400 mm wide)',
     power: 'Fed from 60 A DB (B)',
   },
   {
     id: 'sonardyne', num: 4, name: 'Sonardyne SPRINT-Nav DP', short: 'Sonardyne',
     ident: 'Sonardyne SPRINT-Nav DP in a lockable cradle',
-    dims: 'Unit ≈ Ø240 × 375 mm (assumed). Table 1000 × 500 × 950 mm',
-    dimsSource: 'assumed', position: 'Right edge between the corner frame and the lightbox, facing the right aisle',
+    dims: 'Unit ≈ Ø240 × 375 mm (assumed). Shared table 1500 × 500 × 950 mm (R6)',
+    dimsSource: 'assumed', position: 'Left edge, rear half of the shared 1.5 m table with Fugro, in a lockable cradle, facing the left aisle (R6, moved from the right edge)',
     logo: 'Sonardyne logo on the table front (600 mm wide)',
     power: 'Fed from 60 A DB (B)',
-  },
-  {
-    id: 'smt', num: 5, name: 'SMT Logo', short: 'SMT',
-    ident: 'Sinor Marine Technologies branding',
-    dims: 'Lit acrylic ≈ 900 × 360 mm',
-    dimsSource: 'assumed', position: 'Back wall, centred under the video wall on the booth centre line, facing the entrance',
-    logo: '—', power: 'Back wall lighting circuit',
   },
 ];
 
@@ -106,16 +99,16 @@ function dpConsole(kind, tex, M) {
 }
 
 // ---------------- Display table 1000 x 500 x 950 (white plinth, blue LED edge) ----------------
-function displayTable(M, logo) {
+function displayTable(M, logos, L = 1.0) {
   const g = new THREE.Group();
-  const L = 1.0, Dp = 0.5, H = 0.95;
+  const Dp = 0.5, H = 0.95;
   g.add(box(L, H - 0.03, Dp, M.white, 0, (H - 0.03) / 2, 0));
   g.add(box(L + 0.02, 0.03, Dp + 0.02, M.whiteGloss, 0, H - 0.015, 0));
   g.add(box(L + 0.022, 0.01, 0.01, M.ledBlue, 0, H - 0.035, Dp / 2 + 0.012));
   g.add(box(L, 0.01, 0.01, M.ledBlue, 0, 0.03, Dp / 2 + 0.003));
   shadowAll(g);
-  // manufacturer logo centred on the aisle-facing front panel
-  if (logo) { const m = logoPlane(logo.t, logo.w, logo.a, M); m.position.set(0, 0.52, Dp / 2 + 0.003); m.name = logo.name; g.add(m); }
+  // manufacturer logos on the aisle-facing front panel, each under its own unit
+  for (const logo of logos) { const m = logoPlane(logo.t, logo.w, logo.a, M); m.position.set(logo.x || 0, 0.52, Dp / 2 + 0.003); m.name = logo.name; g.add(m); }
   return g;
 }
 
@@ -185,7 +178,7 @@ export function buildEquipment(tex, M, roof) {
   // 1 + 2: consoles in the rear corners, rotated 45° toward the booth centre
   const consoles = [
     { id: 'mt', c: P(75, 425), rot: 45 * DEG, logo: tex.logoMt, asp: LOGO_ASPECT.mt, lw: 0.44 },
-    { id: 'navis', c: P(525, 425), rot: -45 * DEG, logo: tex.logoNavis, asp: LOGO_ASPECT.navis, lw: 0.50 },
+    { id: 'navis', c: P(410, 308), rot: 0, logo: tex.logoNavis, asp: LOGO_ASPECT.navis, lw: 0.50 }, // R6: box 2, faces the front aisle
   ];
   for (const k of consoles) {
     const g = new THREE.Group(); g.name = `Equipment_${k.id}`;
@@ -205,18 +198,24 @@ export function buildEquipment(tex, M, roof) {
     colliders.push({ type: 'obb', cx: k.c.x, cz: k.c.z, hx: 0.36, hz: 0.37, rot: k.rot });
   }
 
-  // 3 + 4: display tables along the side edges, long side to the aisle
-  const tables = [
-    { id: 'fugro', c: P(37, 230), rot: -Math.PI / 2, set: fugroSet, logo: { t: tex.logoFugro, a: LOGO_ASPECT.fugro, w: 0.40, name: 'Logo_Fugro_Table' } },
-    { id: 'sonardyne', c: P(563, 230), rot: Math.PI / 2, set: sonardyneSet, logo: { t: tex.logoSonardyne, a: LOGO_ASPECT.sonardyne, w: 0.60, name: 'Logo_Sonardyne_Table' } },
-  ];
-  for (const t of tables) {
-    const g = new THREE.Group(); g.name = `Equipment_${t.id}`;
-    g.add(displayTable(M, t.logo)); g.add(t.set(tex, M));
-    g.position.set(t.c.x, FLOOR_Y, t.c.z); g.rotation.y = t.rot;
-    root.add(g);
-    items[t.id] = { group: g, focusHeight: 1.05, facing: t.rot, dist: 1.6 };
-    colliders.push({ type: 'obb', cx: t.c.x, cz: t.c.z, hx: 0.27, hz: 0.52, rot: 0 });
+  // 3 + 4 (R6): one 1500 x 500 x 950 table on the left edge, long side to the left aisle.
+  // Local +x points to the front aisle: Fugro on the front half, Sonardyne on the rear half.
+  {
+    const c = P(37, 253), rot = -Math.PI / 2;
+    const tbl = new THREE.Group(); tbl.name = 'Table_Fugro_Sonardyne';
+    tbl.add(displayTable(M, [
+      { t: tex.logoFugro, a: LOGO_ASPECT.fugro, w: 0.40, x: 0.36, name: 'Logo_Fugro_Table' },
+      { t: tex.logoSonardyne, a: LOGO_ASPECT.sonardyne, w: 0.50, x: -0.38, name: 'Logo_Sonardyne_Table' },
+    ], 1.5));
+    tbl.position.set(c.x, FLOOR_Y, c.z); tbl.rotation.y = rot; root.add(tbl);
+    for (const [id, set, off] of [['fugro', fugroSet, 0.36], ['sonardyne', sonardyneSet, -0.38]]) {
+      const g = new THREE.Group(); g.name = `Equipment_${id}`;
+      const u = set(tex, M); u.position.x = off; g.add(u);
+      g.position.set(c.x, FLOOR_Y, c.z); g.rotation.y = rot;
+      root.add(g);
+      items[id] = { group: g, focusHeight: 1.05, facing: rot, dist: 1.5, focusOverride: u };
+    }
+    colliders.push({ type: 'obb', cx: c.x, cz: c.z, hx: 0.27, hz: 0.77, rot: 0 });
   }
 
   return { root, items, colliders };

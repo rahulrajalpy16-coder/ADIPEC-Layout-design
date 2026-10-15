@@ -73,13 +73,11 @@ manager.onLoad = () => { $('#loader').classList.add('done'); setTimeout(() => $(
 manager.onError = (u) => console.warn('Could not load', u);
 const tex = loadTextures(renderer, manager);
 const M = makeMaterials(tex);
-const { booth, roof, colliders, counter, smtLogo } = buildBooth(tex, M);
+const { booth, roof, colliders, counter } = buildBooth(tex, M);
 scene.add(booth);
 const eq = buildEquipment(tex, M, roof);
 scene.add(eq.root);
 colliders.push(...eq.colliders);
-// SMT logo (back wall) is selectable as item 5
-eq.items.smt = { group: smtLogo, focusHeight: 0.8, facing: 0, dist: 2.2, focusOverride: smtLogo };
 
 // ---------- post-processing (desktop only; XR renders directly) ----------
 let composer = null;
@@ -163,6 +161,7 @@ function makeLabel(text, cls = 'tag') {
   const d = document.createElement('div'); d.className = cls; d.textContent = text;
   const o = new CSS2DObject(d); return o;
 }
+scene.updateMatrixWorld(true);
 for (const e of EQUIPMENT) {
   const it = eq.items[e.id]; if (!it) continue;
   const lab = makeLabel(`${e.num}  ${e.short}`);
