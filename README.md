@@ -76,8 +76,9 @@ docs/prep_textures.py how the textures were extracted from the PDFs
 | `equipment-fugro.glb` | Fugro receiver and display | |
 | `equipment-sonardyne.glb` | SPRINT-Nav in cradle | |
 
-3ds Max ready OBJ files (centimetres, with materials and textures) for every added item are in
-`3dsmax/`, with import steps in `3dsmax/README.txt`.
+3ds Max files for every added item are in `3dsmax/<Item>/`:
+- `.fbx` (recommended): Autodesk FBX 7.4, centimetres, textures embedded. Import steps in `3dsmax/README-FBX.txt`.
+- `.obj` + `.mtl` + textures: centimetres. Import steps in `3dsmax/README.txt`.
 
 Units are metres, Y up. Origin is the stand centre at hall-floor level. The
 front aisle is +Z, the Amphicos side is +X. Each file was re-loaded with
