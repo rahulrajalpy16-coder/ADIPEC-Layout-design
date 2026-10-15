@@ -29,7 +29,7 @@ export const EQUIPMENT = [
     ident: 'Fugro Seastar 9410-AUT DGPS/GNSS receiver with monitoring display',
     dims: 'Units: receiver ≈ 300 × 280 × 100 mm, display ≈ 320 × 220 mm (assumed). Shared table 1500 × 500 × 950 mm (R6, was 1000)',
     dimsSource: 'assumed', position: 'Left edge, front half of the shared 1.5 m table (Sonardyne on the rear half), facing the left aisle',
-    logo: 'Fugro logo on the table front (400 mm wide)',
+    logo: 'Fugro logo on the shared table front, front half (400 mm wide)',
     power: 'Fed from 60 A DB (B)',
   },
   {
@@ -37,7 +37,7 @@ export const EQUIPMENT = [
     ident: 'Sonardyne SPRINT-Nav DP in a lockable cradle',
     dims: 'Unit ≈ Ø240 × 375 mm (assumed). Shared table 1500 × 500 × 950 mm (R6)',
     dimsSource: 'assumed', position: 'Left edge, rear half of the shared 1.5 m table with Fugro, in a lockable cradle, facing the left aisle (R6, moved from the right edge)',
-    logo: 'Sonardyne logo on the table front (600 mm wide)',
+    logo: 'Sonardyne logo on the shared table front, rear half (500 mm wide)',
     power: 'Fed from 60 A DB (B)',
   },
 ];

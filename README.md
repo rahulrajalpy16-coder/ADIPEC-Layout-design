@@ -170,7 +170,7 @@ Review renders are in `docs/views/rev3/`.
   bottom edge. The MT logo is 440 mm wide and the NAVIS logo 500 mm wide. Nothing on
   the consoles rises above their own 1,205 mm height, so all 8 screens are clear from
   every viewpoint. Console size and position are unchanged.
-- The plan set is now `docs/Stand-15288-Plan-Set-R5.pdf`.
+- The plan set was reissued as R5 (now superseded by R6).
 
 ## Revision 6 (15 Oct 2026)
 
@@ -190,8 +190,8 @@ Changes marked by Rahul on the plan:
 
 - Whole project: the download button in the app's top bar, or
   <https://github.com/rahulrajalpy16-coder/ADIPEC-Layout-design/archive/refs/heads/main.zip>
-- Layout proposal (R5): `docs/Stand-15288-Layout-Proposal-R5.pdf`
-- 2D/3D plan set (R5): `docs/Stand-15288-Plan-Set-R5.pdf`
+- Layout proposal (R6): `docs/Stand-15288-Layout-Proposal-R6.pdf`
+- 2D/3D plan set (R6): `docs/Stand-15288-Plan-Set-R6.pdf`
 
 ## What was tested and what was not
 
