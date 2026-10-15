@@ -12,12 +12,12 @@ export function P(xcm, ycm) { return { x: xcm / 100 - STAND.w / 2, z: STAND.d / 
 
 export function makeMaterials(tex) {
   const M = {
-    white: new THREE.MeshStandardMaterial({ color: 0xf4f6f8, roughness: 0.42, metalness: 0.0 }),
-    whiteGloss: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.18, metalness: 0.0 }),
+    white: new THREE.MeshStandardMaterial({ color: 0xe8ecef, roughness: 0.42, metalness: 0.0 }),
+    whiteGloss: new THREE.MeshStandardMaterial({ color: 0xf0f2f4, roughness: 0.22, metalness: 0.0 }),
     blue: new THREE.MeshStandardMaterial({ color: 0x1d9ad6, roughness: 0.35, metalness: 0.05 }),
     blueDeep: new THREE.MeshStandardMaterial({ color: 0x0f86c8, roughness: 0.45, emissive: 0x0a4f7a, emissiveIntensity: 0.35 }),
     ledBlue: new THREE.MeshBasicMaterial({ color: 0x3fc4ff, toneMapped: false }),
-    ledWhite: new THREE.MeshBasicMaterial({ color: 0xffffff, toneMapped: false }),
+    ledWhite: new THREE.MeshBasicMaterial({ color: 0xe0e0e0, toneMapped: false }),
     black: new THREE.MeshStandardMaterial({ color: 0x15171a, roughness: 0.5, metalness: 0.1 }),
     bezel: new THREE.MeshStandardMaterial({ color: 0x0b0c0e, roughness: 0.25, metalness: 0.3 }),
     chrome: new THREE.MeshStandardMaterial({ color: 0xe8ecef, roughness: 0.12, metalness: 0.9 }),
@@ -26,9 +26,9 @@ export function makeMaterials(tex) {
     ring: new THREE.MeshStandardMaterial({ color: 0x1e9ee0, roughness: 0.55 }),
     hallFloor: new THREE.MeshStandardMaterial({ map: tex.floor, color: 0xffffff, roughness: 0.32, metalness: 0.25 }),
   };
-  M.screen = (t) => new THREE.MeshBasicMaterial({ map: t, toneMapped: false });
+  M.screen = (t) => new THREE.MeshBasicMaterial({ map: t, color: 0xd6d6d6, toneMapped: false });
   // LED panel: emissive image with a faint gloss so it picks up hall reflections
-  M.display = (t) => new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0xffffff, emissiveMap: t, roughness: 0.22, metalness: 0, envMapIntensity: 0.35, toneMapped: false });
+  M.display = (t) => new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0xd0d0d0, emissiveMap: t, roughness: 0.22, metalness: 0, envMapIntensity: 0.35, toneMapped: false });
   M.logo = (t) => new THREE.MeshBasicMaterial({ map: t, alphaTest: 0.35, side: THREE.FrontSide });
   return M;
 }

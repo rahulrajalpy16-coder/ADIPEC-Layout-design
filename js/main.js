@@ -24,7 +24,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, lowPower ? 1.5 : 2));
 renderer.setSize(canvasHost.clientWidth, canvasHost.clientHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.0;
+renderer.toneMappingExposure = 0.75;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.xr.enabled = true;
@@ -40,28 +40,28 @@ scene.background = new THREE.Color(0x0a0d12);
 scene.fog = new THREE.Fog(0x0a0d12, 22, 60);
 const pmrem = new THREE.PMREMGenerator(renderer);
 scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
-scene.environmentIntensity = 0.55;
+scene.environmentIntensity = 0.4;
 
 const camera = new THREE.PerspectiveCamera(50, canvasHost.clientWidth / canvasHost.clientHeight, 0.05, 200);
 
 // ---------- lights ----------
-scene.add(new THREE.HemisphereLight(0xdfefff, 0x1b2430, 0.55));
-const key = new THREE.DirectionalLight(0xffffff, 1.6);
+scene.add(new THREE.HemisphereLight(0xdfefff, 0x1b2430, 0.4));
+const key = new THREE.DirectionalLight(0xffffff, 1.25);
 key.position.set(4, 9, 7); key.castShadow = true;
 key.shadow.mapSize.set(lowPower ? 1024 : 2048, lowPower ? 1024 : 2048);
 Object.assign(key.shadow.camera, { left: -6, right: 6, top: 6, bottom: -6, near: 1, far: 25 });
 key.shadow.bias = -0.0004; key.shadow.normalBias = 0.02;
 scene.add(key);
-const fill = new THREE.DirectionalLight(0xbfdfff, 0.45); fill.position.set(-6, 5, -2); scene.add(fill);
+const fill = new THREE.DirectionalLight(0xbfdfff, 0.35); fill.position.set(-6, 5, -2); scene.add(fill);
 // canopy downlights (a few real spots; the rest are emissive discs)
 for (const [x, z] of [[-1.2, 1.0], [1.2, 1.0], [0, 1.9], [0, 0.4]]) {
-  const s = new THREE.SpotLight(0xfff4e6, 7, 6, 0.75, 0.6, 1.4);
+  const s = new THREE.SpotLight(0xfff4e6, 4, 6, 0.75, 0.6, 1.4);
   s.position.set(x, HEADER_Y - 0.02, z); s.target.position.set(x, 0, z + 0.1);
   scene.add(s, s.target);
 }
 // wash lights on back-wall corners where the consoles stand
 for (const sx of [-1, 1]) {
-  const s = new THREE.SpotLight(0xffffff, 6, 5, 0.6, 0.7, 1.2);
+  const s = new THREE.SpotLight(0xffffff, 3, 5, 0.6, 0.7, 1.2);
   s.position.set(sx * 2.0, HEADER_Y, -0.8); s.target.position.set(sx * 2.3, FLOOR_Y + 0.8, -1.8);
   scene.add(s, s.target);
 }
@@ -86,7 +86,7 @@ let composer = null;
 if (!lowPower) {
   composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  composer.addPass(new UnrealBloomPass(new THREE.Vector2(canvasHost.clientWidth, canvasHost.clientHeight), 0.42, 0.5, 0.92));
+  composer.addPass(new UnrealBloomPass(new THREE.Vector2(canvasHost.clientWidth, canvasHost.clientHeight), 0.15, 0.4, 0.97));
   composer.addPass(new OutputPass());
 }
 
